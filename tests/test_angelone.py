@@ -23,6 +23,11 @@ class FakeClient:
             "data": [["2026-01-01T09:15:00+05:30", 100, 110, 99, 108, 500]],
         }
 
+    def ltpData(self, exchange, symbol, symbol_token):
+        return {"status": True, "data": {
+            "open": 100, "high": 110, "low": 99, "close": 102, "ltp": 108,
+        }}
+
 
 class AngelOneTests(unittest.TestCase):
     def setUp(self):
@@ -51,6 +56,12 @@ class AngelOneTests(unittest.TestCase):
             client.historical(
                 "3045", datetime(2026, 1, 2), datetime(2026, 1, 1)
             )
+
+    def test_live_quote(self):
+        client = AngelOneClient(self.settings, FakeClient(), FakeTotp())
+        quote = client.quote("SBIN-EQ", "3045")
+        self.assertEqual(quote["last_price"], 108)
+        self.assertEqual(quote["exchange"], "NSE")
 
     def test_api_failure_does_not_expose_credentials(self):
         class FailedClient(FakeClient):
