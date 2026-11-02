@@ -101,3 +101,20 @@ class AngelOneClient:
             }
             for row in rows
         ]
+
+    def quote(self, symbol: str, symbol_token: str, *, exchange: str = "NSE"):
+        if not symbol or not symbol_token:
+            raise ValueError("symbol and symbol_token are required")
+        if self._client is None:
+            self.login()
+        response = self._client.ltpData(exchange, symbol, symbol_token)
+        if not isinstance(response, dict) or not response.get("status"):
+            message = response.get("message", "unknown API error") if isinstance(response, dict) else "invalid response"
+            raise RuntimeError(f"Quote request failed: {message}")
+        data = response.get("data") or {}
+        return {
+            "symbol": symbol, "symbol_token": symbol_token, "exchange": exchange,
+            "open": data.get("open"), "high": data.get("high"),
+            "low": data.get("low"), "close": data.get("close"),
+            "last_price": data.get("ltp"),
+        }
