@@ -2,3 +2,4 @@ smartapi-python>=1.5,<2
 pyotp>=2.9,<3
 pycryptodome>=3.20,<4
 websocket-client>=1.8,<2
+streamlit>=1.40,<2
