@@ -37,12 +37,33 @@ your chosen security. The command logs in with a time-based one-time password an
 returns daily NSE candles as JSON. You can select another exchange or supported
 interval with `--exchange` and `--interval`.
 
+## Dashboard and continuous worker
+
+Install dependencies, then start the background quote worker and dashboard:
+
+```bash
+python -m pip install -r requirements.txt
+./start.sh
+```
+
+Open port 8501. The dashboard shows the latest quote and provides a persistent
+Start/Stop analysis switch. The worker checks every 60 seconds by default. Set
+`ANALYSIS_INTERVAL_SECONDS` to 30 or more. Configure `ANGELONE_SYMBOL`,
+`ANGELONE_SYMBOL_TOKEN`, and `ANGELONE_EXCHANGE` for the target instrument.
+
+The Dockerfile runs the dashboard and worker together. Mount persistent storage
+at `/app/data` so the switch and latest report survive container restarts.
+
+GitHub Actions creates a weekday report at 4:15 PM India time. Add the four
+Angel One credentials as Actions secrets. Repository variables
+`ANGELONE_SYMBOL` and `ANGELONE_SYMBOL_TOKEN` select the instrument.
+
 ## Current scope
 
-Historical CSV analysis, SmartAPI authentication and historical candle fetching
-are implemented. The live path remains inactive until cloud secrets are added.
-A dashboard, scheduling, instrument-token lookup, and deployment are not yet
-configured.
+Historical analysis, SmartAPI authentication, live quotes, the dashboard,
+manual Start/Stop control, a continuous worker, and weekday reporting are
+implemented. Live data remains inactive until cloud secrets are added. Cloud
+hosting and instrument-token lookup are not yet configured.
 
 ## Next work
 
@@ -50,7 +71,7 @@ configured.
 2. Configure API credentials through cloud secret bindings, never in Git.
 3. Add an instrument master lookup so users can enter symbols instead of tokens.
 4. Add time-zone handling, market-session checks, retries, and API rate limits.
-5. Choose a dashboard, hosting target, and data storage before scheduled refreshes.
+5. Choose a hosting target and persistent data volume for continuous deployment.
 
 Keep private market exports under `data/` (ignored by Git).
 
