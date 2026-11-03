@@ -118,3 +118,4 @@ class AngelOneClient:
             "low": data.get("low"), "close": data.get("close"),
             "last_price": data.get("ltp"),
         }
+

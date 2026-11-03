@@ -5,3 +5,13 @@ __pycache__/
 .env.*
 !.env.example
 data/
+
+*.db
+*.db-wal
+*.db-shm
+*.index.lock
+*.dpapi
+.deps/
+.venv/
+*diagnostic_report.json
+verified_*instruments.json

@@ -1,0 +1,24 @@
+[Unit]
+Description=NIFTY and SENSEX read-only analysis
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=angelone
+WorkingDirectory=/opt/angelone
+EnvironmentFile=/etc/angelone/service.env
+Environment=ANGELONE_DATA_DIR=/var/lib/angelone
+ExecStart=/opt/angelone/.venv/bin/python service.py --host 127.0.0.1 --port 8081
+Restart=on-failure
+RestartSec=15
+KillMode=control-group
+TimeoutStopSec=15
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/angelone
+
+[Install]
+WantedBy=multi-user.target

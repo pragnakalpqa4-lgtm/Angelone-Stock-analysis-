@@ -1,0 +1,5 @@
+# Optional historical CSV/API CLI; not used by the live index service.
+smartapi-python>=1.5,<2
+pyotp>=2.9,<3
+pycryptodome>=3.20,<4
+logzero>=1.7,<2

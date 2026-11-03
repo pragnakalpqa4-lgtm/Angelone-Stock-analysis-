@@ -37,3 +37,4 @@ explicitly changes the project scope.
 - Start/Stop control affects the complete analysis pipeline.
 - Daily reports are generated and delivered automatically.
 - Health checks, stale-data detection, logs, and meaningful tests pass.
+

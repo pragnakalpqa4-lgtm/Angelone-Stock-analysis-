@@ -1,4 +1,4 @@
-name: Daily market analysis
+name: Daily NIFTY and SENSEX status
 on:
   schedule:
     - cron: "45 10 * * 1-5"
@@ -9,21 +9,19 @@ jobs:
   report:
     runs-on: ubuntu-latest
     env:
-      ANGELONE_API_KEY: ${{ secrets.ANGELONE_API_KEY }}
-      ANGELONE_CLIENT_CODE: ${{ secrets.ANGELONE_CLIENT_CODE }}
-      ANGELONE_PIN: ${{ secrets.ANGELONE_PIN }}
-      ANGELONE_TOTP_SECRET: ${{ secrets.ANGELONE_TOTP_SECRET }}
-      ANGELONE_SYMBOL: ${{ vars.ANGELONE_SYMBOL || 'SBIN-EQ' }}
-      ANGELONE_SYMBOL_TOKEN: ${{ vars.ANGELONE_SYMBOL_TOKEN || '3045' }}
+      ANGELONE_REPORT_URL: ${{ vars.ANGELONE_REPORT_URL }}
+      DASHBOARD_USER: ${{ secrets.DASHBOARD_USER }}
+      DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r requirements.txt
-      - run: python worker.py --once
+      - name: Retrieve deployed report or explain deployment blocker
+        run: python workflow_report.py
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: daily-market-report
-          path: data/latest_report.json
+          name: daily-nifty-sensex-report
+          path: data/reports/
           retention-days: 30
