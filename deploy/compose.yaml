@@ -1,0 +1,20 @@
+services:
+  analysis:
+    build: ..
+    restart: unless-stopped
+    init: true
+    ports:
+      - "127.0.0.1:8081:8081"
+    environment:
+      DASHBOARD_HOST: 0.0.0.0
+      DASHBOARD_USER: ${DASHBOARD_USER:-operator}
+      DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:?Set a private dashboard password}
+      ANGELONE_DATA_DIR: /app/data
+      ANGELONE_API_KEY: ${ANGELONE_API_KEY:-}
+      ANGELONE_CLIENT_CODE: ${ANGELONE_CLIENT_CODE:-}
+      ANGELONE_PIN: ${ANGELONE_PIN:-}
+      ANGELONE_TOTP_SECRET: ${ANGELONE_TOTP_SECRET:-}
+    volumes:
+      - market-data:/app/data
+volumes:
+  market-data:

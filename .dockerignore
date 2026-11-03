@@ -1,0 +1,14 @@
+.git
+.env
+.env.*
+data
+.deps
+.venv
+__pycache__
+**/__pycache__
+*.db
+*.db-wal
+*.db-shm
+*.dpapi
+*diagnostic_report.json
+verified_*instruments.json
